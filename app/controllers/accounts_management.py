@@ -12,12 +12,13 @@ blueprint = Blueprint('account', __name__, url_prefix='/account')
 @blueprint.route('/')
 def index():
     if 'username' in session:
-        return redirect(url_for('home.index'))
+        return "<center>User Already Logged In</center> <center> <a href='/'> Click to go back to Home Page</a> </center>"
 
     return render_template('am.html')
 
 @blueprint.route('/login', methods=['POST'])
 def login():
+    
     users = db.users
     login_user = users.find_one({'name' : request.form['username']})
 
@@ -26,13 +27,16 @@ def login():
             session['username'] = request.form['username']
             return redirect(url_for('home.index'))
 
-    return "Incorrect Username/Password!"
+    return "<center>Incorrect Username/Password!<center> <center> <a href='/'> Click to go back to Home Page</a> </center>"
 
 @blueprint.route('/logout', methods=['POST', 'GET'])
 def logout():
     if 'username' in session:
+        username = session['username']
         session.clear()
-        return "User Logged Out"
+        return "<center> User Logged Out: " + username + "</center>" + "<center> <a href='/' Click to go back to home page> Home Page </a> </center>"
+    else:
+        return "<center> No User Logged In </center> <center> <a href='/'> Click to go back to Home Page</a> </center>"
 
 @blueprint.route('/register', methods=['POST', 'GET'])
 def register():
@@ -44,8 +48,8 @@ def register():
             hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
             users.insert({'name' : request.form['username'], 'password' : hashpass})
             session['username'] = request.form['username']
-            return redirect(url_for('home.index'))
+            return "<center> Registration Successful! <center> <center> <a href='/'> Click to go back to Home Page</a> </center>"
         
-        return 'Account exists'
+        return "<center> Account Already Exists <center> <center> <a href='/'> Click to go back to Home Page</a> </center>"
 
     return render_template('amregister.html')
