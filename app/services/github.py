@@ -1,57 +1,86 @@
-import requests, json
+# import requests, json
+# from oauthlib.oauth2 import WebApplicationClient
+# from flask import request
 
-api_url = 'https://api.github.com'
-authorize_url = 'https://github.com/login/oauth/authorize'
-token_url = 'https://github.com/login/oauth/access_token'
+# GOOGLE_DISCOVERY_URL = (
+#     "https://accounts.google.com/.well-known/openid-configuration"
+# )
 
-class GitHub():
+# def get_google_provider_cfg():
+#     return requests.get(GOOGLE_DISCOVERY_URL).json()
 
-    def __init__(self, client_id = '', client_secret = '', access_token = ''):
-        self.client_id = client_id
-        self.client_secret = client_secret
-        self.access_token = access_token
 
-    def authorization_url(self, scope):
-        return authorize_url + '?client_id={}&client_secret={}&scope={}'.format(
-            self.client_id,
-            self.client_secret,
-            scope
-        )
+# class GitHub():
 
-    def get_token(self, code):
-        """Fetch GitHub Access Token for GitHub OAuth."""
-        headers = { 'Accept': 'application/json' }
-        params = {
-            'code': code,
-            'client_id': self.client_id,
-            'client_secret': self.client_secret,
-        }
+#     def __init__(self, client_id = '', client_secret = '', access_token = ''):
+#         self.client_id = client_id
+#         self.client_secret = client_secret
+#         self.access_token = access_token
+#         self.client = WebApplicationClient(self.client_id)
 
-        data = requests.post(token_url, params=params, headers=headers).json()
-        return data.get('access_token', None)
 
-    def get(self, route_url, params = {}):
-        url = api_url + route_url
-        params['access_token'] = self.access_token
+#     def authorization_url(self):
+#         google_provider_cfg = get_google_provider_cfg()
+#         authorization_endpoint = google_provider_cfg["authorization_endpoint"]
+#         request_uri = self.client.prepare_request_uri(
+#             authorization_endpoint,
+#             redirect_uri=request.base_url + "/callback",
+#             scope=["openid", "email", "profile"],
+#         )
+#         return request_uri
 
-        return requests.get(url, params=params).json()
+#     def get_token(self, code):
+#         # """Fetch GitHub Access Token for GitHub OAuth."""
+#         # headers = { 'Accept': 'application/json' }
+#         # params = {
+#         #     'code': code, 
+#         #     'client_id': self.client_id,
+#         #     'client_secret': self.client_secret,
+#         # }
 
-    def post(self, route_url, params = {}):
-        url = api_url + route_url
-        params['access_token']  = self.access_token
+#         # data = requests.post(token_url, params=params, headers=headers).json()
 
-        return requests.post(url, params=params).json()
+#         google_provider_cfg = get_google_provider_cfg()
+#         token_endpoint = google_provider_cfg["token_endpoint"]
+#         token_url, headers, body = client.prepare_token_request(
+#             token_endpoint,
+#             authorization_response=request.url,
+#             redirect_url=request.base_url,
+#             code=code
+#         )
+#         token_response = requests.post(
+#             token_url,
+#             headers=headers,
+#             data=body,
+#             auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
+#         )
 
-    def delete(self, route_url, params = {}):
-        url = api_url + route_url
-        params['access_token']  = self.access_token
+#         client.parse_request_body_response(json.dumps(token_response.json()))
 
-        return requests.delete(url, params=params)
+#         return token_response.get('access_token', None)
 
-    @staticmethod
-    def get_user_from_token(access_token):
-        """Fetch user data using the access token."""
-        url = api_url + '/user'
-        params = { 'access_token': access_token }
+#     def get(self, route_url, params = {}):
+#         url = api_url + route_url
+#         params['access_token'] = self.access_token
 
-        return requests.get(url, params=params).json()
+#         return requests.get(url, params=params).json()
+
+#     def post(self, route_url, params = {}):
+#         url = api_url + route_url
+#         params['access_token']  = self.access_token
+
+#         return requests.post(url, params=params).json()
+
+#     def delete(self, route_url, params = {}):
+#         url = api_url + route_url
+#         params['access_token']  = self.access_token
+
+#         return requests.delete(url, params=params)
+
+#     @staticmethod
+#     def get_user_from_token(access_token):
+#         """Fetch user data using the access token."""
+#         url = api_url + '/user'
+#         params = { 'access_token': access_token }
+
+#         return requests.get(url, params=params).json()

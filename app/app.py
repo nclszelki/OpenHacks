@@ -3,14 +3,20 @@ import os
 from flask import Flask, render_template
 from . import settings, controllers, models
 from .extensions import db
-
+from app.controllers.auth import login_manager
+from app.models.user import User
 project_dir = os.path.dirname(os.path.abspath(__file__))
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get_id(user_id)
 
 def create_app(config_object=settings):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_object)
 
+    login_manager.init_app(app)
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
@@ -28,7 +34,7 @@ def register_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(controllers.home.blueprint)
     app.register_blueprint(controllers.auth.blueprint)
-    app.register_blueprint(controllers.tutorial.blueprint)
+    #app.register_blueprint(controllers.tutorial.blueprint)
     return None
 
 def register_errorhandlers(app):

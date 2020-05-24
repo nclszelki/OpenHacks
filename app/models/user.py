@@ -1,32 +1,32 @@
 from app.extensions import db
-from app.services.github import GitHub
+from flask_login import UserMixin
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    avatar_url = db.Column(db.String(80), nullable=True)
-    github_id = db.Column(db.Integer(), nullable=True)
 
-    def __init__(self, username, avatar_url, github_id):
+
+    def __init__(self, username):
         self.username = username
-        self.avatar_url = avatar_url
-        self.github_id = github_id
+ 
 
     @staticmethod
-    def find_or_create_from_token(access_token):
-        data = GitHub.get_user_from_token(access_token)
+    def find_or_create_from_token(userinfo_response):
 
         """Find existing user or create new User instance"""
-        instance = User.query.filter_by(username=data['login']).first()
+        instance = User.query.filter_by(username=userinfo_response.json()["given_name"]).first()
 
         if not instance:
-            instance = User(data['login'], data['avatar_url'], data['id'])
+            instance = User(userinfo_response.json()["given_name"])
             db.session.add(instance)
             db.session.commit()
 
         return instance
 
+    @staticmethod
+    def get_id(user_id):
+        return None
     def __repr__(self):
         return "<User: {}>".format(self.username)
