@@ -16,9 +16,9 @@ def index():
 
 
     #here we can save the items to an array from the database and then loop through in the index2 template
+    items = db.items
 
-
-    return render_template('home/index2.html')
+    return render_template('home/index2.html', items = items)
 
 @blueprint.route('/', methods = ['POST'])
 def addItem():
@@ -32,4 +32,4 @@ def addItem():
     items.insert_one(item)
 
     
-    return render_template('/home/index2.html')
+    return render_template('/home/index2.html', item = item)
