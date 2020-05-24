@@ -101,6 +101,13 @@
                 </div>
                 <div class="form-row">
                   <div class="col mb-3">
+                    <label for="location">Location</label>
+                    <textarea name="location" id="location" class="form-control" rows="3"
+                      placeholder="Write something about the product..." required></textarea>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col mb-3">
                     <label for="image_link">Image Link</label>
                     <input type="text" name="image_link" id="image_link" class="form-control"
                       placeholder="https://image.png" />
@@ -141,11 +148,11 @@
             
                     <div class="row">
 
-                      {% for item in items %}
+                      {% for item in items.find() %}
                       
                         <div class="col-lg-4 col-md-6 mb-4">
                           <div class="card h-100">
-                            <a href="#"><img class="card-img-top" src="https://i0.wp.com/homeairguides.com/wp-content/uploads/2020/02/best-through-the-wall-air-conditioners.jpg"  width=200 height=150 alt=""></a>
+                            <a href="#"><img class="card-img-top" src="{{item.imageLink}}"  width=200 height=150 alt=""></a>
                             <div class="card-body">
                               <h4 class="card-title">
                                 <a href="#">  {{item.itemName}}</a>
@@ -159,18 +166,6 @@
                       {% endfor %} 
 
 
-                    <div class="col-lg-4 col-md-6 mb-4">
-                      <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="https://i0.wp.com/homeairguides.com/wp-content/uploads/2020/02/best-through-the-wall-air-conditioners.jpg"  width=200 height=150 alt=""></a>
-                        <div class="card-body">
-                          <h4 class="card-title">
-                            <a href="#">  {{item.itemName}}</a>
-                          </h4>
-                          <h5>New York, New York</h5>
-                          <p class="card-text">  {{item.description}}</p>
-                        </div>
-                      </div>
-                    </div>
                     
                       
                       <div class="col-lg-4 col-md-6 mb-4">

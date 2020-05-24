@@ -25,6 +25,7 @@ def addItem():
     item = {
         "itemName" : request.form['name'],
         "description" : request.form['description'],
+        "location" : request.form['location'],
         "imageLink" : request.form['image_link']
     }
     
@@ -32,4 +33,4 @@ def addItem():
     items.insert_one(item)
 
     
-    return render_template('/home/index2.html', item = item)
+    return render_template('/home/index2.html', items = items)
