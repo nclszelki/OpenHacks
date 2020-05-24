@@ -3,6 +3,8 @@ import os
 from flask import Flask, render_template
 from . import settings, controllers, models
 from .extensions import db
+import pymongo
+from pymongo import MongoClient
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -14,7 +16,7 @@ def create_app(config_object=settings):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_object)
 
-    register_extensions(app)
+    # register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
     return app
@@ -30,8 +32,8 @@ def register_extensions(app):
 def register_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(controllers.home.blueprint)
-    app.register_blueprint(controllers.auth.blueprint)
-    app.register_blueprint(controllers.tutorial.blueprint)
+    # app.register_blueprint(controllers.auth.blueprint)
+    # app.register_blueprint(controllers.tutorial.blueprint)
     return None
 
 def register_errorhandlers(app):
