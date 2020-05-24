@@ -6,6 +6,9 @@ from .extensions import db
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
 
+client = pymongo.MongoClient("mongodb://penguin022:<Ji0G552V7QT83xCr>@cluster0-shard-00-00-yinp0.azure.mongodb.net:27017,cluster0-shard-00-01-yinp0.azure.mongodb.net:27017,cluster0-shard-00-02-yinp0.azure.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
+db = client.test
+
 def create_app(config_object=settings):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
